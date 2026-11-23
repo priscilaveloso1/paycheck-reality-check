@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Paycheck Reality Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a guided flow. A deep green cover, then four short sections shown one at a time, then a personal report.
+   Palette comes from the PDF cover: deep green, layered arch greens, sage, cream, thin gold lines. */
+:root{
+  --bg:#FAF8F3; --surface:#FFFEFB; --tint:#F1EDE2; --line:#D6D2C4;
+  --ink:#2B2824; --ink2:#4A4740; --muted:#6B6558;
+  --accent:#2D5F4B; --on-accent:#FAF8F3;
+  --cover:#0E2A21; --panel:#0E2A21; --panel-ink:#F4EEDF; --panel-muted:#A9C4B6; --panel-line:rgba(244,238,223,.16);
+  --gold:#C4A25E; --gold-ink:#8A6A25;
+  --arch-tall:#2D5F4B; --arch-mid:#3E7360; --sage:#7FA593; --cream:#F0E8D5;
+  --good-bg:#DDEBDF; --good-ink:#23503A;
+  --warn-bg:#F6E8CC; --warn-ink:#7A4E0B;
+  --bad-bg:#F6DDD8; --bad-ink:#8F2A1D;
+  --font-display:'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body:'Work Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101714; --surface:#17201B; --tint:#1F2923; --line:#33423A;
+    --ink:#EDE9DE; --ink2:#CBC6B8; --muted:#A39D8F;
+    --accent:#8DBFA4; --on-accent:#0E2A21;
+    --cover:#0B1F18; --panel:#1A3E30; --panel-muted:#A9C4B6;
+    --gold-ink:#D8B876;
+    --good-bg:#1F3A2B; --good-ink:#A9D9B8;
+    --warn-bg:#3D2F12; --warn-ink:#E8C47A;
+    --bad-bg:#42201B; --bad-ink:#F0A89C;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101714; --surface:#17201B; --tint:#1F2923; --line:#33423A;
+  --ink:#EDE9DE; --ink2:#CBC6B8; --muted:#A39D8F;
+  --accent:#8DBFA4; --on-accent:#0E2A21;
+  --cover:#0B1F18; --panel:#1A3E30; --panel-muted:#A9C4B6;
+  --gold-ink:#D8B876;
+  --good-bg:#1F3A2B; --good-ink:#A9D9B8;
+  --warn-bg:#3D2F12; --warn-ink:#E8C47A;
+  --bad-bg:#42201B; --bad-ink:#F0A89C;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:400 16px/1.6 var(--font-body);
+  padding-block:0;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  -webkit-text-size-adjust:100%;
+}
+body.is-cover{background:var(--cover); color:var(--panel-ink)}
+h1,h2,h3,h4{font-family:var(--font-display); font-weight:600; margin:0; text-wrap:balance; color:var(--ink)}
+h2{font-size:clamp(1.7rem, 6vw, 2.15rem); line-height:1.12; font-weight:500; letter-spacing:-.005em}
+h3{font-size:1.25rem; line-height:1.25}
+h4{font-size:1.05rem; line-height:1.3}
+h1:focus,h2:focus{outline:none}
+p{margin:0}
+a{color:var(--accent); text-underline-offset:3px}
+.eyebrow{font-size:.72rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--accent)}
+.muted{color:var(--muted)}
+.small{font-size:.86rem; line-height:1.5}
+.stack{display:flex; flex-direction:column; gap:14px}
+.stack-lg{display:flex; flex-direction:column; gap:22px}
+
+.app{max-width:600px; margin:0 auto; padding-block:20px 32px; display:flex; flex-direction:column; gap:20px}
+.screen{display:flex; flex-direction:column; gap:20px}
+@media (prefers-reduced-motion: no-preference){
+  .screen{animation:rise .3s ease both}
+  @keyframes rise{from{opacity:.4; transform:translateY(8px)} to{opacity:1; transform:none}}
+}
+.head{display:flex; flex-direction:column; gap:10px}
+.intro{color:var(--ink2); font-size:1.02rem; line-height:1.55}
+
+/* progress: four arches, the cover's motif */
+.chrome{display:flex; flex-direction:column; gap:14px}
+.chrome-top{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap}
+.step-label{font-size:.8rem; color:var(--muted)}
+.steps{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:8px}
+.steps li{display:flex; flex-direction:column; align-items:center; gap:6px; font-size:.72rem; letter-spacing:.02em; color:var(--muted); text-align:center}
+.steps svg{width:30px; height:36px; display:block}
+.steps .o,.steps .i{fill:none; stroke:var(--line); stroke-width:1.5}
+.steps li.now{color:var(--ink); font-weight:600}
+.steps li.now .o{stroke:var(--gold); fill:var(--tint)}
+.steps li.now .i{stroke:var(--accent)}
+.steps li.done .o{fill:var(--arch-mid); stroke:var(--arch-mid)}
+.steps li.done .i{fill:var(--cream); stroke:var(--cream)}
+
+/* cover */
+.cover{gap:0}
+.cover-copy{display:flex; flex-direction:column; gap:18px; padding-top:28px}
+.rule{display:block; width:64px; height:1px; background:var(--gold)}
+.rule.short{width:44px}
+.cover .eyebrow{color:var(--gold)}
+.cover h1{font-weight:400; font-size:clamp(2.7rem, 12vw, 4rem); line-height:1; letter-spacing:-.015em; color:var(--panel-ink)}
+.cover h1 em{display:block; font-style:italic; font-weight:400; font-size:.78em; margin-bottom:.12em}
+.cover .lede{font-family:var(--font-display); font-style:italic; font-size:1.2rem; line-height:1.45; color:var(--panel-ink); max-width:26em}
+.cover .small{color:var(--panel-muted)}
+.what{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0; counter-reset:w; max-width:26em}
+.what li{counter-increment:w; display:grid; grid-template-columns:28px 1fr; gap:10px; padding:9px 0; border-top:1px solid var(--panel-line); font-size:.98rem; color:var(--panel-ink)}
+.what li:last-child{border-bottom:1px solid var(--panel-line)}
+.what li::before{content:counter(w); font-family:var(--font-display); color:var(--gold); font-weight:500}
+.cover .story{font-family:var(--font-display); font-style:italic; font-size:1.02rem; line-height:1.5; color:var(--panel-muted); max-width:28em}
+.cover-actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:4px}
+.btn-cover{font:inherit; font-weight:600; font-size:1rem; border-radius:10px; padding:14px 24px; min-height:50px; cursor:pointer; border:1px solid var(--cream); background:var(--cream); color:#0E2A21}
+.btn-cover.ghost{background:transparent; color:var(--panel-ink); border-color:var(--panel-line)}
+.btn-cover:focus-visible,.linkcover:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
+.linkcover{align-self:flex-start; font:inherit; font-size:.95rem; background:none; border:0; padding:6px 0; color:var(--panel-ink); text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--gold); cursor:pointer}
+.art{display:block; width:100%; max-width:380px; height:auto; margin:8px 0 0 auto; margin-right:calc(-1 * max(16px, env(safe-area-inset-right, 0px)))}
+body.is-cover footer{color:var(--panel-muted)}
+
+/* banner */
+.banner{background:var(--warn-bg); color:var(--warn-ink); border-radius:12px; padding:14px 16px; display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+.banner p{font-size:.92rem; flex:1 1 220px}
+
+/* cards and controls */
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:16px; min-width:0}
+.card-head{display:flex; flex-direction:column; gap:6px}
+.tag{align-self:flex-start; font-size:.68rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; background:var(--tint); color:var(--accent); padding:3px 9px; border-radius:999px}
+.grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:14px}
+.field{display:flex; flex-direction:column; gap:6px; min-width:0}
+.field label, .legend{font-size:.9rem; font-weight:500}
+.hint{font-size:.8rem; color:var(--muted); line-height:1.45}
+.input{display:flex; align-items:center; border:1px solid var(--line); border-radius:10px; background:var(--bg); min-width:0}
+.input:focus-within{outline:2px solid var(--accent); outline-offset:1px}
+.input span{padding-left:12px; color:var(--muted); font-size:.95rem}
+.input span.end{padding-left:0; padding-right:12px}
+.input input{flex:1; min-width:0; border:0; background:transparent; color:var(--ink); font:inherit; padding:12px; outline:none; font-variant-numeric:tabular-nums}
+.input input::placeholder{color:var(--muted); opacity:.7}
+.input.plain input{padding-left:12px}
+.drow{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1fr); gap:10px}
+.drow .input input{padding:12px 8px}
+.drow .input span{padding-left:8px}
+.drow .input span.end{padding-left:0; padding-right:8px}
+.seg{display:flex; gap:8px; flex-wrap:wrap; border:0; margin:0; padding:0}
+.seg label{display:inline-flex; position:relative}
+.seg input{position:absolute; opacity:0; pointer-events:none}
+.seg span{border:1px solid var(--line); border-radius:999px; padding:9px 16px; font-size:.92rem; cursor:pointer; background:var(--bg)}
+.seg input:checked + span{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+.seg input:focus-visible + span{outline:2px solid var(--accent); outline-offset:2px}
+.checks{display:flex; flex-direction:column; gap:12px; border:0; margin:0; padding:0; min-width:0}
+.checks legend{padding:0; margin-bottom:10px; font-size:.72rem; font-weight:600; letter-spacing:.11em; text-transform:uppercase; color:var(--muted)}
+.check{display:flex; gap:12px; align-items:flex-start; font-size:.98rem; cursor:pointer; line-height:1.45}
+.check input{margin-top:3px; width:20px; height:20px; accent-color:var(--accent); flex-shrink:0}
+.btn{font:inherit; font-weight:500; font-size:.95rem; border-radius:10px; padding:12px 18px; min-height:46px; cursor:pointer; border:1px solid var(--accent); background:var(--accent); color:var(--on-accent)}
+.btn.ghost{background:transparent; color:var(--accent)}
+.btn.warn{background:var(--warn-ink); border-color:var(--warn-ink); color:var(--warn-bg)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn:focus-visible,.linkbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.linkbtn{font:inherit; font-size:.88rem; background:none; border:0; padding:4px 0; color:var(--accent); text-decoration:underline; text-underline-offset:3px; cursor:pointer}
+
+/* results */
+.result{background:var(--panel); color:var(--panel-ink); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; gap:10px; min-width:0}
+.result .label{font-size:.7rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--panel-muted)}
+.result .big{font-family:var(--font-display); font-weight:500; font-size:clamp(2.1rem, 9vw, 2.9rem); line-height:1; font-variant-numeric:tabular-nums; overflow-wrap:anywhere}
+.result p{color:var(--panel-ink); font-size:.96rem; line-height:1.5}
+.result p.dim{color:var(--panel-muted); font-size:.88rem}
+.result .row{display:flex; justify-content:space-between; gap:16px; border-top:1px solid var(--panel-line); padding-top:10px; font-size:.94rem}
+.result .row b{font-weight:600; font-variant-numeric:tabular-nums; text-align:right}
+.result ol{margin:0; padding-left:1.2em; display:flex; flex-direction:column; gap:6px; font-size:.96rem}
+.result li b{font-weight:600}
+.chip{align-self:flex-start; font-size:.78rem; font-weight:600; padding:4px 10px; border-radius:999px}
+.chip.good{background:var(--good-bg); color:var(--good-ink)}
+.chip.warn{background:var(--warn-bg); color:var(--warn-ink)}
+.chip.bad{background:var(--bad-bg); color:var(--bad-ink)}
+.bar{height:10px; border-radius:999px; background:var(--panel-line); overflow:hidden}
+.bar i{display:block; height:100%; background:var(--panel-ink); border-radius:999px; width:0}
+.empty{color:var(--panel-muted); font-size:.94rem}
+
+details.more{border:1px solid var(--line); border-radius:10px; padding:12px 14px; background:var(--surface)}
+details.more summary{cursor:pointer; font-weight:500; font-size:.92rem}
+details.more ul{margin:10px 0 0; padding-left:1.2em; display:flex; flex-direction:column; gap:6px; font-size:.92rem; color:var(--ink2)}
+.facts{display:flex; flex-direction:column; gap:12px; margin:0; padding:0; list-style:none}
+.facts li{background:var(--tint); border-radius:10px; padding:14px 16px; font-size:.95rem; color:var(--ink2)}
+.facts b{color:var(--ink)}
+
+/* nav bar */
+.navbar{position:sticky; bottom:0; z-index:5; display:flex; gap:10px; padding:12px 0 calc(12px + env(safe-area-inset-bottom, 0px)); background:var(--bg); border-top:1px solid var(--line)}
+.navbar .next{flex:1}
+
+/* report */
+.lede2{font-family:var(--font-display); font-size:1.3rem; line-height:1.4; color:var(--ink); font-weight:400}
+.tiles{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px}
+.tile{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:4px; min-width:0}
+.tile .k{font-size:.68rem; font-weight:600; letter-spacing:.11em; text-transform:uppercase; color:var(--muted)}
+.tile .v{font-family:var(--font-display); font-weight:500; font-size:1.55rem; line-height:1.1; font-variant-numeric:tabular-nums; overflow-wrap:anywhere}
+.block{display:flex; flex-direction:column; gap:14px; padding-top:22px; border-top:1px solid var(--line)}
+.moves{display:flex; flex-direction:column; gap:12px; margin:0; padding:0; list-style:none; counter-reset:m}
+.moves li{counter-increment:m; display:grid; grid-template-columns:34px 1fr; gap:12px; align-items:start; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px 16px}
+.moves li::before{content:counter(m); font-family:var(--font-display); font-weight:500; font-size:1.5rem; line-height:1.1; color:var(--accent)}
+.rep{display:flex; flex-direction:column; gap:8px}
+.rep-head{display:flex; justify-content:space-between; align-items:baseline; gap:12px}
+details.sc{background:var(--surface); border:1px solid var(--line); border-radius:12px}
+details.sc > summary{list-style:none; cursor:pointer; padding:14px 16px; display:flex; align-items:center; gap:12px; font-weight:500}
+details.sc > summary::-webkit-details-marker{display:none}
+details.sc > summary .t{flex:1; min-width:0}
+details.sc > summary::after{content:'+'; font-size:1.4rem; line-height:1; color:var(--accent); transition:transform .2s}
+details.sc[open] > summary::after{transform:rotate(45deg)}
+.sc-body{padding:0 16px 16px; display:flex; flex-direction:column; gap:12px}
+.sc-body .when{font-size:.9rem; color:var(--muted)}
+.say{background:var(--tint); border-radius:10px; padding:14px 16px; font-size:.97rem; color:var(--ink); white-space:pre-wrap}
+.say .k{display:block; font-size:.68rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+.sc-foot{display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between}
+.sc-foot p{font-size:.88rem; color:var(--ink2); flex:1 1 240px}
+.foryou{font-size:.66rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; background:var(--good-bg); color:var(--good-ink); padding:3px 8px; border-radius:999px; white-space:nowrap}
+.close{background:var(--panel); color:var(--panel-ink); border-radius:16px; padding:28px 22px; display:flex; flex-direction:column; gap:16px}
+.close h2{color:var(--panel-ink)}
+.close p{color:var(--panel-ink); font-size:1rem}
+.close .dim{color:var(--panel-muted); font-size:.92rem}
+.offer{background:rgba(244,238,223,.08); border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:2px}
+.offer b{font-family:var(--font-display); font-weight:600; font-size:1.1rem; color:var(--panel-ink)}
+.cta{background:var(--cream); color:#0E2A21; border-radius:12px; padding:16px 18px}
+.cta b{font-family:var(--font-display); font-size:1.15rem; display:block; color:#0E2A21}
+.cta span{font-size:.9rem}
+.row-actions{display:flex; flex-wrap:wrap; gap:10px}
+footer{font-size:.8rem; color:var(--muted); line-height:1.5}
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+</style>
+
+</head>
+<body>
+<div class="app" id="app">
+
+  <div class="banner" id="exBanner" role="status" hidden>
+    <p>You're looking at example numbers, so you can see how everything works. None of it is yours.</p>
+    <button class="btn warn" type="button" id="useOwn">Use my own numbers</button>
+  </div>
+
+  <header class="chrome" id="chrome" hidden>
+    <div class="chrome-top">
+      <span class="eyebrow">The Paycheck Reality Check</span>
+      <span class="step-label" id="stepLabel"></span>
+    </div>
+    <ol class="steps" id="steps" aria-label="Progress"></ol>
+  </header>
+
+  <main class="stack-lg" id="main">
+
+    <!-- COVER -->
+    <section class="screen cover" data-page="welcome" aria-labelledby="h-welcome">
+      <div class="cover-copy">
+        <span class="rule"></span>
+        <div class="eyebrow">Free mini app · by Priscila Veloso</div>
+        <h1 id="h-welcome" tabindex="-1"><em>The</em> Paycheck Reality Check</h1>
+        <span class="rule short"></span>
+        <p class="lede">Answer four short sections. You get a personal report on where your paycheck really goes, what your debt really costs, and what to say to bring it down.</p>
+        <ol class="what" aria-label="The four sections">
+          <li>Your real number</li>
+          <li>Where your paycheck goes</li>
+          <li>What your debt costs</li>
+          <li>Your six-month safety number</li>
+        </ol>
+        <p class="small">About 10 minutes. Your answers are saved only on this device, so you can stop and come back. Nothing is sent to anyone.</p>
+        <p class="story">In 2020, my husband and I started the year owing money. By December, we were financially strong. It started with one honest look at where our money was going. This is that first honest look.</p>
+        <div class="cover-actions">
+          <button class="btn-cover" type="button" id="start">Start</button>
+          <button class="btn-cover ghost" type="button" id="startOver" hidden>Start over</button>
+        </div>
+        <button class="linkcover" type="button" id="seeExample">See an example report first</button>
+      </div>
+      <svg class="art" viewBox="0 0 360 330" role="img" aria-label="Layered arches in green, sage and cream">
+        <path d="M150 330V110a95 95 0 0 1 190 0V330" fill="none" stroke="#C4A25E" stroke-width="1"/>
+        <path d="M165 330V110a80 80 0 0 1 160 0V330z" fill="#2D5F4B"/>
+        <path d="M10 330V292a74 74 0 0 1 148 0V330" fill="none" stroke="#C4A25E" stroke-width="1"/>
+        <path d="M26 330V294a58 58 0 0 1 116 0V330z" fill="#3E7360"/>
+        <path d="M95 330V272a70 70 0 0 1 140 0V330z" fill="#7FA593"/>
+        <path d="M165 330V250a70 70 0 0 1 140 0V330z" fill="#F0E8D5"/>
+        <path d="M104 215V150M118 205V118M132 200V96M146 196V82" stroke="#C4A25E" stroke-width="1" fill="none"/>
+      </svg>
+    </section>
+
+    <!-- STEP 1 -->
+    <section class="screen" data-page="income" aria-labelledby="h-income" hidden>
+      <div class="head">
+        <h2 id="h-income" tabindex="-1">Your real number</h2>
+        <p class="intro">Most of us plan around the paycheck we wish we had. Let's find the real one. Everything that lands in your account counts as income. But only income that repeats should be used to plan. A bonus, a garage sale or a gift is welcome, but don't build your life around it.</p>
+      </div>
+      <div class="card">
+        <fieldset class="seg" aria-label="How does your pay work?">
+          <label><input type="radio" name="paymode" id="pm_fixed" value="fixed" checked><span>My pay is the same every month</span></label>
+          <label><input type="radio" name="paymode" id="pm_var" value="variable"><span>My pay changes month to month</span></label>
+        </fieldset>
+        <div id="fixedBox" class="stack">
+          <div class="field">
+            <label for="pay1">Take-home pay per month, after tax</label>
+            <div class="input"><span>$</span><input id="pay1" inputmode="decimal" autocomplete="off" placeholder="3,600"></div>
+            <p class="hint">Paid every two weeks? Multiply one paycheck by 26, then divide by 12. Don't just double it: two months a year have three paychecks, and those extra ones aren't part of your normal month. Doing this as a couple? Add both take-home pays together.</p>
+          </div>
+        </div>
+        <div id="varBox" class="stack" hidden>
+          <div class="grid">
+            <div class="field"><label for="m1">Last month</label><div class="input"><span>$</span><input id="m1" inputmode="decimal" autocomplete="off" placeholder="3,900"></div></div>
+            <div class="field"><label for="m2">2 months ago</label><div class="input"><span>$</span><input id="m2" inputmode="decimal" autocomplete="off" placeholder="3,100"></div></div>
+            <div class="field"><label for="m3">3 months ago</label><div class="input"><span>$</span><input id="m3" inputmode="decimal" autocomplete="off" placeholder="3,500"></div></div>
+          </div>
+          <p class="hint">Count only money that repeats, after tax. Self-employed? Use what's left after your business expenses and the taxes you set aside yourself. Couple? Add both pays together.</p>
+        </div>
+      </div>
+      <div class="result" id="r1" aria-live="polite"></div>
+      <p class="small muted">Plan with the lowest month. Never build your lifestyle around an unusually good one.</p>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="screen" data-page="spoken" aria-labelledby="h-spoken" hidden>
+      <div class="head">
+        <h2 id="h-spoken" tabindex="-1">Spoken for before you touch it</h2>
+        <p class="intro">Add what your paycheck has to cover every month, whether you feel like paying it or not. Monthly amounts.</p>
+      </div>
+      <div class="card">
+        <div class="grid">
+          <div class="field"><label for="ap_housing">Rent or mortgage</label><div class="input"><span>$</span><input id="ap_housing" inputmode="decimal" autocomplete="off" placeholder="1,250"></div></div>
+          <div class="field"><label for="ap_bills">Utilities, phone and insurance</label><div class="input"><span>$</span><input id="ap_bills" inputmode="decimal" autocomplete="off" placeholder="420"></div></div>
+          <div class="field"><label for="ap_food">Groceries and transportation</label><div class="input"><span>$</span><input id="ap_food" inputmode="decimal" autocomplete="off" placeholder="700"></div></div>
+          <div class="field"><label for="ap_loans">Loan and card payments</label><div class="input"><span>$</span><input id="ap_loans" inputmode="decimal" autocomplete="off" placeholder="540"></div><p class="hint">Minimums, car, student loans, buy now pay later installments.</p></div>
+          <div class="field"><label for="ap_subs">Subscriptions and memberships</label><div class="input"><span>$</span><input id="ap_subs" inputmode="decimal" autocomplete="off" placeholder="96"></div><p class="hint">Streaming, apps, gym, software, delivery passes, clubs.</p></div>
+        </div>
+      </div>
+      <div class="result" id="r2" aria-live="polite"></div>
+      <details class="more">
+        <summary>Where to find subscriptions you forgot about</summary>
+        <ul>
+          <li>Go through last month's statements and look for names you don't recognize. If you don't recognize something, investigate it.</li>
+          <li>Open your phone's subscription settings (Apple and Google Play both list them).</li>
+          <li>Look for free trials that quietly turned into paid plans.</li>
+          <li>Check for price increases. A charge can change without a notice you'd notice.</li>
+          <li>Pick one and cancel it this week. Your report has the exact words.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- STEP 3a -->
+    <section class="screen" data-page="debt" aria-labelledby="h-debt" hidden>
+      <div class="head">
+        <h2 id="h-debt" tabindex="-1">What you carry</h2>
+        <p class="intro">Debt feels small because it arrives in small monthly pieces. Tick what applies to you, and the next screens show what it adds up to.</p>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <span class="tag">From The Financial Security Guide</span>
+          <p class="muted">Survival Debt is borrowing you rely on to cover everyday living costs or basic necessities, because your income isn't enough to cover them on its own. It's the debt that keeps people stuck, because the borrowing never stops.</p>
+        </div>
+        <fieldset class="checks">
+          <legend>Borrowing to get by</legend>
+          <label class="check"><input type="checkbox" id="d_card"><span>A credit card balance I carry from month to month</span></label>
+          <label class="check"><input type="checkbox" id="d_payday"><span>A payday loan or cash advance to make it to payday</span></label>
+          <label class="check"><input type="checkbox" id="d_bnpl"><span>Buy now, pay later balances</span></label>
+          <label class="check"><input type="checkbox" id="d_over"><span>Overdraft, or a line of credit I use to cover bills</span></label>
+        </fieldset>
+        <fieldset class="checks">
+          <legend>Other debt</legend>
+          <label class="check"><input type="checkbox" id="d_car"><span>A car payment</span></label>
+          <div class="field" id="carWrap" hidden>
+            <label for="car">Monthly car payment</label>
+            <div class="input"><span>$</span><input id="car" inputmode="decimal" autocomplete="off" placeholder="280"></div>
+            <p class="hint">A mortgage, a normal car loan, a lease or student loans don't count by themselves. The exception is a car payment that is 25% or more of your monthly take-home pay (couples: combined).</p>
+          </div>
+          <label class="check"><input type="checkbox" id="d_other"><span>Other loans I'm paying down, such as student or personal loans</span></label>
+        </fieldset>
+        <label class="check"><input type="checkbox" id="d_none"><span>None of these</span></label>
+        <p class="hint">A credit card you pay in full every month isn't debt. It's a payment method.</p>
+      </div>
+      <div class="result" id="r6" aria-live="polite"></div>
+    </section>
+
+    <!-- STEP 3b -->
+    <section class="screen" data-page="debt2" aria-labelledby="h-debt2" hidden>
+      <div class="head">
+        <h2 id="h-debt2" tabindex="-1">What your debt really costs</h2>
+        <p class="intro">Put your real numbers in and watch what it adds up to.</p>
+      </div>
+      <div class="stack-lg">
+        <div class="stack" id="cardCard">
+          <div class="card">
+            <div class="card-head"><h3>A credit card balance</h3></div>
+            <div class="grid">
+              <div class="field"><label for="cc_bal">Balance</label><div class="input"><span>$</span><input id="cc_bal" inputmode="decimal" autocomplete="off" placeholder="4,200"></div></div>
+              <div class="field"><label for="cc_apr">Interest rate (APR)</label><div class="input"><input id="cc_apr" inputmode="decimal" autocomplete="off" placeholder="24.99"><span class="end">%</span></div><p class="hint">It's on your statement.</p></div>
+              <div class="field"><label for="cc_pay">What you pay each month</label><div class="input"><span>$</span><input id="cc_pay" inputmode="decimal" autocomplete="off" placeholder="120"></div></div>
+              <div class="field"><label for="cc_extra">Try adding this much each month</label><div class="input"><span>$</span><input id="cc_extra" inputmode="decimal" autocomplete="off" placeholder="50"></div></div>
+            </div>
+          </div>
+          <div class="result" id="r3" aria-live="polite"></div>
+          <p class="small muted">Assumes you pay the same amount every month and add no new purchases.</p>
+        </div>
+
+        <div class="stack" id="paydayCard">
+          <div class="card">
+            <div class="card-head"><h3>A payday loan or cash advance</h3></div>
+            <div class="grid">
+              <div class="field"><label for="pd_amt">Amount you borrowed</label><div class="input"><span>$</span><input id="pd_amt" inputmode="decimal" autocomplete="off" placeholder="300"></div></div>
+              <div class="field"><label for="pd_fee">Total fee or interest</label><div class="input"><span>$</span><input id="pd_fee" inputmode="decimal" autocomplete="off" placeholder="45"></div></div>
+              <div class="field"><label for="pd_days">Days until you paid it back</label><div class="input plain"><input id="pd_days" inputmode="decimal" autocomplete="off" placeholder="14"></div><p class="hint">Usually 14, tied to your next paycheck.</p></div>
+              <div class="field"><label for="pd_times">Times you did this in the last 12 months</label><div class="input plain"><input id="pd_times" inputmode="decimal" autocomplete="off" placeholder="6"></div></div>
+            </div>
+          </div>
+          <div class="result" id="r4" aria-live="polite"></div>
+          <p class="small muted">Canada's consumer agency (FCAC) uses a $300 loan over 14 days as its example: $42 as a payday loan, $5.92 on a line of credit, $7.42 with overdraft protection and $7.65 as a credit card cash advance. <a href="https://www.canada.ca/en/financial-consumer-agency/services/loans/payday-loans" target="_blank" rel="noopener">Read the source</a>.</p>
+        </div>
+
+        <div class="stack" id="bnplCard">
+          <div class="card">
+            <div class="card-head"><h3>Buy now, pay later</h3></div>
+            <div class="grid">
+              <div class="field"><label for="bn_due">Due in the next 30 days, all plans together</label><div class="input"><span>$</span><input id="bn_due" inputmode="decimal" autocomplete="off" placeholder="180"></div></div>
+              <div class="field"><label for="bn_owed">Total you still owe on all plans</label><div class="input"><span>$</span><input id="bn_owed" inputmode="decimal" autocomplete="off" placeholder="520"></div></div>
+            </div>
+          </div>
+          <div class="result" id="r5" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3c -->
+    <section class="screen" data-page="rank" aria-labelledby="h-rank" hidden>
+      <div class="head">
+        <span class="tag" style="align-self:flex-start">From The Financial Security Guide</span>
+        <h2 id="h-rank" tabindex="-1">Which debt do you go after first?</h2>
+        <p class="intro">List every loan with its balance and interest rate. You'll find the rate on your statement or in your online account, and if you can't find it, ask the lender. You don't need the number by heart, but you do need a sense of what your debt costs you in interest.</p>
+      </div>
+      <div class="card">
+        <div class="stack" id="debtRows"></div>
+        <div><button class="btn ghost" type="button" id="addRow">Add another loan</button></div>
+      </div>
+      <div class="result" id="r7" aria-live="polite"></div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="screen" data-page="safety" aria-labelledby="h-safety" hidden>
+      <div class="head">
+        <span class="tag" style="align-self:flex-start">From The Financial Security Guide</span>
+        <h2 id="h-safety" tabindex="-1">Your six-month safety number</h2>
+        <p class="intro">An emergency fund is what keeps your household running if your income stops. Count your essentials and your loan payments, because if your income stops, both still come due.</p>
+      </div>
+      <div class="card">
+        <div class="grid">
+          <div class="field"><label for="ess">Essential expenses per month</label><div class="input"><span>$</span><input id="ess" inputmode="decimal" autocomplete="off" placeholder="2,370"></div><p class="hint">Rent or mortgage, utilities, groceries, everyday meals, basic transportation, insurance, health costs and childcare.</p></div>
+          <div class="field"><label for="lp">Regular loan payments per month</label><div class="input"><span>$</span><input id="lp" inputmode="decimal" autocomplete="off" placeholder="540"></div><p class="hint">Car loan, student loans and the regular payment on any other loan. Not the extra. Your mortgage counts once: it's already in essentials if you listed it there.</p></div>
+          <div class="field"><label for="saved">Already saved for emergencies</label><div class="input"><span>$</span><input id="saved" inputmode="decimal" autocomplete="off" placeholder="800"></div></div>
+          <div class="field"><label for="setaside">What you could set aside per month</label><div class="input"><span>$</span><input id="setaside" inputmode="decimal" autocomplete="off" placeholder="250"></div></div>
+        </div>
+        <p class="hint" id="autoNote" hidden>Essentials and loan payments are filled in from your answers in step 2. Change either one if it isn't right.</p>
+      </div>
+      <div class="result" id="r8" aria-live="polite"></div>
+      <p class="small muted">Designed to keep your household running for six months if your income stops. Six months is the minimum.</p>
+    </section>
+
+    <!-- REPORT -->
+    <section class="screen" data-page="report" aria-labelledby="h-report" hidden>
+      <div class="head">
+        <div class="eyebrow">Your report</div>
+        <h2 id="h-report" tabindex="-1">Where you really stand</h2>
+        <p class="lede2" id="repLede"></p>
+      </div>
+      <div class="tiles" id="tiles"></div>
+
+      <div class="block">
+        <h3>Your next 3 moves</h3>
+        <ol class="moves" id="moves"></ol>
+      </div>
+
+      <div class="block">
+        <h3>The numbers behind it</h3>
+        <div class="stack-lg" id="repCards"></div>
+      </div>
+
+      <div class="block">
+        <h3>Say this, save money</h3>
+        <p class="muted">Banks and companies say yes more often than you'd expect, but mostly to the people who ask. Say only what's true. Fill in the brackets, then call. Write down the date, the name of the person and what they told you.</p>
+        <div class="stack" id="scripts"></div>
+      </div>
+
+      <div class="block">
+        <h3>Cheaper ways out</h3>
+        <p class="small muted">Check the current terms. Rules and rates change, and in Canada each province sets its own.</p>
+        <ul class="facts">
+          <li><b>United States: credit union Payday Alternative Loans (PALs).</b> Federal credit unions can offer them under NCUA rules: up to $2,000, repaid over 1 to 12 months, with the rate capped at 28% APR and an application fee of at most $20. You have to be a member, so ask a credit union you can join. <a href="https://www.govinfo.gov/content/pkg/FR-2019-10-01/html/2019-20821.htm" target="_blank" rel="noopener">Read the rule</a>.</li>
+          <li><b>Canada: the cost of a payday loan.</b> In most provinces the maximum is $14 for every $100 borrowed, which FCAC says works out to roughly 365% a year. Cheaper options it lists: more time to pay a bill, a pay advance from your employer, a line of credit or overdraft protection at your bank, or a payment deferral from your lender.</li>
+          <li><b>Stuck in debt? Talk to a nonprofit credit counsellor.</b> In Canada, FCAC points to Credit Counselling Canada (creditcounsellingcanada.ca) and the Canadian Association for Financial Empowerment (cafe-acaf.org). It also says no reputable agency charges for the first meeting, and that talking to one doesn't affect your credit score. In the US, look for a nonprofit agency, for example one that belongs to the National Foundation for Credit Counseling (nfcc.org). <a href="https://www.canada.ca/en/financial-consumer-agency/services/debt/debt-help.html" target="_blank" rel="noopener">Read the FCAC guide</a>.</li>
+        </ul>
+      </div>
+
+      <section class="close">
+        <h2>You just did something most people never do. You looked.</h2>
+        <p>This report shows you where you are. It can't tell you where every paycheck should go next.</p>
+        <p>That is what the Financial Security System is for: a simple system to stop living paycheck to paycheck and build financial security faster.</p>
+        <div class="offer"><b>The Financial Security Guide</b><span class="dim">Plain English. The step by step of what my husband and I actually did, with a commitment to sign at the end of each step.</span></div>
+        <div class="offer"><b>The WealthMe web app</b><span class="dim">The tool to put it into practice every month, on your phone or computer.</span></div>
+        <p>One payment. Lifetime access. All future updates included.</p>
+        <p class="dim">This is not a promise of results. It is what we did, written down step by step.</p>
+        <div class="cta"><b>Tap the link in my Instagram bio</b><span>@itspriscilaveloso</span></div>
+      </section>
+
+      <div class="row-actions">
+        <button class="btn ghost" type="button" id="editAll">Change my answers</button>
+        <button class="btn ghost" type="button" id="wipe">Clear my data</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>Educational content only. Not financial, investment, tax or legal advice. Rules and rates change, so check current terms before you act.</footer>
+
+  <nav class="navbar" id="navbar" aria-label="Steps" hidden>
+    <button class="btn ghost" type="button" id="back">Back</button>
+    <button class="btn next" type="button" id="next">Continue</button>
+  </nav>
+</div>
+
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var qa = function(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+  var esc = function(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+  var val = function(id){
+    var el = $(id); if(!el) return null;
+    var t = el.value.replace(/[^0-9.]/g, '');
+    if(t === '' || t === '.') return null;
+    var x = parseFloat(t); return isFinite(x) ? x : null;
+  };
+  var chk = function(id){ var e = $(id); return !!(e && e.checked); };
+  var usd = function(x, d){ d = d || 0; return (x < 0 ? '-' : '') + '$' + Math.abs(x).toLocaleString('en-US', {minimumFractionDigits:d, maximumFractionDigits:d}); };
+  var dur = function(m){
+    var y = Math.floor(m/12), mo = m % 12;
+    var a = y ? y + (y === 1 ? ' year' : ' years') : '';
+    var b = mo ? mo + (mo === 1 ? ' month' : ' months') : '';
+    return [a, b].filter(Boolean).join(' ') || '0 months';
+  };
+  var put = function(id, html){ $(id).innerHTML = html; };
+
+  var KEY = 'prc-wizard-v1';
+  var DEFAULTS = {pd_days:'14', cc_extra:'50'};
+  var ORDER = ['welcome','income','spoken','debt','debt2','rank','safety','report'];
+  var SECTION = {income:1, spoken:2, debt:3, debt2:3, rank:3, safety:4};
+  var NAMES = ['Income', 'Paycheck', 'Debt', 'Safety'];
+  var ST = {page:'welcome', editing:false, example:false, backup:null};
+  var M = {};
+  var hasSaved = false, resume = 'income';
+
+  /* ---------- progress arches ---------- */
+  $('steps').innerHTML = NAMES.map(function(n){
+    return '<li><svg viewBox="0 0 30 36" aria-hidden="true"><path class="o" d="M3 35V15a12 12 0 0 1 24 0v20z"/><path class="i" d="M9 35V16a6 6 0 0 1 12 0v19z"/></svg><span>' + n + '</span></li>';
+  }).join('');
+
+  /* ---------- scripts ---------- */
+  var SCRIPTS = [
+    {t:'Get a fee waived', when:'You were hit with an overdraft or late fee and it doesn\'t happen often.',
+     say:'Hi, I saw a $[amount] fee on [date]. I\'ve been a customer for [number] years and this doesn\'t happen often. Can you waive it this time?',
+     no:'If they say no: "Is there someone who can review it, or can you refund part of it?"'},
+    {t:'Lower your card\'s interest rate', when:'You\'ve been paying on time and carry a balance.',
+     say:'I\'m calling to ask about my interest rate. I\'ve been paying on time and I\'m working on paying this card down. Can you lower my APR?',
+     no:'If they say no: "Do you have a hardship program or a lower-rate option I qualify for?"'},
+    {t:'Move a due date', when:'Bills land before payday and you end up short.',
+     say:'My paycheck arrives on the [date], but my payment is due on the [date]. Can you move my due date to the [date]?',
+     no:'If they say no: "Can I get a one-time extension this month?"'},
+    {t:'Lower the payment when your income can\'t cover it', when:'Your essentials plus your loan payments add up to more than you earn.',
+     say:'My income isn\'t covering my payments at the current amount. I want to keep paying on time. Can we spread this loan over more payments to lower the monthly amount?',
+     no:'This costs more interest in total. It isn\'t ideal, but when the math doesn\'t work, it\'s necessary. Start by cutting or pausing what you can, even for a while.'},
+    {t:'Cancel without the runaround', when:'A subscription or membership you don\'t use.',
+     say:'I\'d like to cancel my subscription today. Please confirm the cancellation and the date it ends, and send me the confirmation by email.',
+     no:'If they offer a discount: "No, thank you. Please cancel." Then check your next statement to make sure the charge stopped.'}
+  ];
+
+  /* ---------- debt rows ---------- */
+  var dr = '';
+  for(var i = 1; i <= 6; i++){
+    dr += '<div class="drow" data-row="' + i + '"' + (i > 3 ? ' hidden' : '') + '>' +
+      '<div class="field"><label for="dn' + i + '">Loan ' + i + '</label><div class="input plain"><input id="dn' + i + '" autocomplete="off" placeholder="Name"></div></div>' +
+      '<div class="field"><label for="db' + i + '">Balance</label><div class="input"><span>$</span><input id="db' + i + '" inputmode="decimal" autocomplete="off" placeholder="0"></div></div>' +
+      '<div class="field"><label for="da' + i + '">APR</label><div class="input"><input id="da' + i + '" inputmode="decimal" autocomplete="off" placeholder="0"><span class="end">%</span></div></div></div>';
+  }
+  $('debtRows').innerHTML = dr;
+  function syncRows(){
+    for(var i = 4; i <= 6; i++){
+      var any = ['dn','db','da'].some(function(p){ return $(p + i).value !== ''; });
+      if(any) qa('[data-row="' + i + '"]')[0].hidden = false;
+    }
+    $('addRow').hidden = qa('#debtRows .drow[hidden]').length === 0;
+  }
+
+  /* ---------- math ---------- */
+  function sim(B, apr, P){
+    var r = apr / 1200;
+    if(P <= B * r + 1e-9) return null;
+    var bal = B, months = 0, paid = 0;
+    while(bal > 0.005 && months < 1200){
+      bal += bal * r;
+      var pay = Math.min(P, bal);
+      bal -= pay; paid += pay; months++;
+    }
+    return {months: months, interest: paid - B};
+  }
+
+  function compute(){
+    var m = {};
+    var modeEl = document.querySelector('input[name=paymode]:checked');
+    m.mode = modeEl ? modeEl.value : 'fixed';
+    var real = null, best = null;
+    if(m.mode === 'fixed'){ real = val('pay1'); }
+    else {
+      var ms = [val('m1'), val('m2'), val('m3')];
+      if(ms.every(function(x){ return x !== null; })){ real = Math.min.apply(null, ms); best = Math.max.apply(null, ms); }
+    }
+    m.real = real; m.best = best;
+
+    var vals = ['ap_housing','ap_bills','ap_food','ap_loans','ap_subs'].map(val);
+    m.any = vals.some(function(x){ return x !== null; });
+    m.total = vals.reduce(function(a, x){ return a + (x || 0); }, 0);
+    m.subs = val('ap_subs') || 0;
+    m.committed = (m.any && real) ? m.total / real * 100 : null;
+
+    m.d = {card:chk('d_card'), payday:chk('d_payday'), bnpl:chk('d_bnpl'), over:chk('d_over'), car:chk('d_car'), other:chk('d_other'), none:chk('d_none')};
+    m.anyTick = Object.keys(m.d).some(function(k){ return m.d[k]; });
+    m.hasDebt = m.d.card || m.d.payday || m.d.bnpl || m.d.over || m.d.other;
+
+    m.car = m.d.car ? val('car') : null;
+    m.carPct = (m.car !== null && real) ? m.car / real * 100 : null;
+    m.carFlag = m.carPct !== null && m.carPct >= 25;
+    m.survival = m.d.card || m.d.payday || m.d.bnpl || m.d.over || m.carFlag;
+
+    m.cc = {B:val('cc_bal'), A:val('cc_apr'), P:val('cc_pay'), X:val('cc_extra') || 0};
+    m.ccReady = m.cc.B !== null && m.cc.A !== null && m.cc.P !== null;
+    m.ccA = m.ccReady ? sim(m.cc.B, m.cc.A, m.cc.P) : null;
+    m.ccNever = m.ccReady && !m.ccA;
+
+    m.pd = {amt:val('pd_amt'), fee:val('pd_fee'), days:val('pd_days'), times:val('pd_times')};
+    m.pdReady = m.pd.amt !== null && m.pd.fee !== null && m.pd.days !== null && m.pd.amt > 0 && m.pd.days > 0;
+
+    m.bn = {due:val('bn_due'), owed:val('bn_owed')};
+
+    var rows = [];
+    for(var i = 1; i <= 6; i++){
+      var bal = val('db' + i), ap = val('da' + i), nm = $('dn' + i).value.trim();
+      if(bal !== null && bal > 0){ rows.push({name: nm || ('Loan ' + i), bal: bal, apr: ap}); }
+    }
+    rows.sort(function(x, y){ if(x.apr === null && y.apr === null) return 0; if(x.apr === null) return 1; if(y.apr === null) return -1; return y.apr - x.apr; });
+    m.rows = rows;
+
+    var es = val('ess'), lp = val('lp');
+    m.es = es; m.lp = lp; m.sv = val('saved'); m.sa = val('setaside');
+    m.base = (es || 0) + (lp || 0);
+    m.target = (es === null && lp === null) ? null : m.base * 6;
+    return m;
+  }
+
+  /* ---------- result builders ---------- */
+  function h_real(m){
+    if(m.real === null) return '<p class="empty">' + (m.mode === 'fixed' ? 'Add your take-home pay to see your real number.' : 'Add all three months to see your real number.') + '</p>';
+    var h = '<div class="label">Your real monthly number</div><div class="big">' + usd(m.real) + '</div>';
+    if(m.mode === 'variable' && m.best > m.real){ h += '<p>Your best month was ' + usd(m.best - m.real) + ' higher. That month doesn\'t get a vote.</p>'; }
+    else { h += '<p>Every number in your report uses this one.</p>'; }
+    return h;
+  }
+  function h_spoken(m){
+    if(!m.any) return '<p class="empty">Add your monthly amounts to see how much of your pay is already spoken for.</p>';
+    var subsRow = m.subs ? '<div class="row"><span>Subscriptions and memberships</span><b>' + usd(m.subs * 12) + ' a year</b></div>' : '';
+    if(m.real === null){
+      return '<div class="label">Already spoken for</div><div class="big">' + usd(m.total) + '</div><p class="dim">a month. Add your real number in step 1 to see the percentage.</p>' + subsRow;
+    }
+    var p = m.total / m.real * 100, tone, line;
+    if(p >= 100){ tone = 'bad'; line = 'More goes out than comes in. The gap is being covered by a card, a loan, an overdraft or savings.'; }
+    else if(p >= 90){ tone = 'bad'; line = 'Almost nothing is left. One surprise bill and you borrow.'; }
+    else if(p >= 75){ tone = 'warn'; line = 'Tight. There\'s little room for anything unplanned.'; }
+    else { tone = 'good'; line = 'You have room to work with. The next question is where that room goes.'; }
+    var left = m.real - m.total, days = Math.round(Math.min(p, 100) * 0.3);
+    var h = '<div class="label">Already spoken for</div><div class="big">' + Math.round(p) + '%</div><span class="chip ' + tone + '">' + (left < 0 ? 'Short by ' + usd(-left) + ' a month' : usd(left) + ' left to live on') + '</span><p>' + line + '</p>';
+    if(p >= 100){ h += '<p class="dim">That is every day of the month, and then some.</p>'; }
+    else if(days > 0){ h += '<p class="dim">That\'s about ' + days + ' days of every month working for your obligations.</p>'; }
+    h += '<div class="row"><span>Spoken for</span><b>' + usd(m.total) + '</b></div>' + subsRow;
+    return h;
+  }
+  function h_card(m){
+    if(!m.ccReady) return '<p class="empty">Add the balance, the APR and what you pay each month.</p>';
+    var c = m.cc, r = c.A / 1200;
+    if(!m.ccA){
+      return '<div class="label">Your payment is not enough</div><div class="big">It never ends</div><p>Your payment doesn\'t even cover the interest. The balance grows every month.</p><div class="row"><span>Interest charged this month</span><b>' + usd(c.B * r) + '</b></div>';
+    }
+    var h = '<div class="label">Time to pay it off</div><div class="big">' + (m.ccA.months >= 1200 ? 'Over 100 years' : dur(m.ccA.months)) + '</div>' +
+      '<p>You\'ll hand over ' + usd(m.ccA.interest) + ' in interest on top of the ' + usd(c.B) + ' you borrowed.</p>' +
+      '<div class="row"><span>Interest charged this month</span><b>' + usd(c.B * r) + '</b></div>';
+    if(c.X > 0){
+      var b = sim(c.B, c.A, c.P + c.X);
+      if(b){ h += '<div class="row"><span>Add ' + usd(c.X) + ' a month</span><b>' + dur(Math.max(0, m.ccA.months - b.months)) + ' sooner, ' + usd(Math.max(0, m.ccA.interest - b.interest)) + ' less interest</b></div>'; }
+    }
+    return h;
+  }
+  function h_payday(m){
+    if(!m.pdReady) return '<p class="empty">Add the amount, the fee and how many days you had it.</p>';
+    var p = m.pd, apr = p.fee / p.amt * 365 / p.days * 100, card = p.amt * 0.25 * p.days / 365;
+    var h = '<div class="label">What that fee is as a yearly rate</div><div class="big">' + Math.round(apr).toLocaleString('en-US') + '% APR</div>' +
+      '<p>That\'s ' + usd(p.fee / p.amt * 100, 2) + ' for every $100 you borrowed. The same ' + usd(p.amt) + ' for ' + p.days + ' days on a credit card at 25% APR costs about ' + usd(card, 2) + '.</p>';
+    if(p.times){ h += '<div class="row"><span>' + p.times + (p.times === 1 ? ' time' : ' times') + ' a year</span><b>' + usd(p.fee * p.times) + ' in fees</b></div>'; }
+    return h;
+  }
+  function h_bnpl(m){
+    var b = m.bn;
+    if(b.due === null && b.owed === null) return '<p class="empty">Add what is due in the next 30 days and what you still owe.</p>';
+    var h = '';
+    if(b.due !== null){
+      h += '<div class="label">Due in the next 30 days</div><div class="big">' + usd(b.due) + '</div>';
+      h += m.real ? '<p>That\'s ' + Math.round(b.due / m.real * 100) + '% of your real number, before rent or groceries.</p>' : '<p class="dim">Add your real number in step 1 to see what share of your pay this takes.</p>';
+    }
+    if(b.owed !== null){ h += '<div class="row"><span>Still owed for things you already have</span><b>' + usd(b.owed) + '</b></div>'; }
+    return h;
+  }
+  function h_survival(m){
+    if(!m.anyTick) return '<p class="empty">Tick what applies to you to see if any of it is Survival Debt.</p>';
+    var h = '';
+    if(m.car !== null && m.real){ h += '<p class="dim">Your car payment is ' + Math.round(m.carPct) + '% of your real number' + (m.carFlag ? ', which counts as Survival Debt.' : ', under the 25% limit.') + '</p>'; }
+    else if(m.car !== null){ h += '<p class="dim">Add your real number in step 1 to run the 25% car payment test.</p>'; }
+    if(m.survival){
+      return '<span class="chip bad">Survival Debt: yes</span><p>At least one of these is Survival Debt. You need to break that cycle before you start building anything else. The next steps show what it costs and which loan to go after first.</p>' + h;
+    }
+    return '<span class="chip good">Survival Debt: none</span><p>Nothing you ticked is Survival Debt. Any debt you do have is a normal obligation.</p>' + h;
+  }
+  function h_rank(m){
+    if(!m.rows.length) return '<p class="empty">Add at least one loan with its balance and rate.</p>';
+    var mi = m.rows.reduce(function(a, x){ return a + (x.apr ? x.bal * x.apr / 1200 : 0); }, 0);
+    var h = '<div class="label">Your debts cost you about</div><div class="big">' + usd(mi) + ' a month</div><p class="dim">That\'s ' + usd(mi * 12) + ' a year in interest, before you pay a cent of what you owe.</p><div class="label" style="margin-top:6px">Go after them in this order</div><ol>';
+    m.rows.forEach(function(x){ h += '<li><b>' + esc(x.name) + '</b>, ' + usd(x.bal) + ' at ' + (x.apr === null ? 'a rate you still need to find' : x.apr + '%') + '</li>'; });
+    h += '</ol><p>Set up regular payments for every loan, and send every extra dollar to number 1. When it\'s gone, move to number 2. The highest rate costs you the most each month, so that\'s where an extra dollar saves the most.</p><p class="dim">Don\'t take on new debt while you do this. If something unexpected comes up, use your cash, not a new loan or a card.</p>';
+    return h;
+  }
+  function h_safety(m){
+    if(m.target === null) return '<p class="empty">Add your essentials and your loan payments.</p>';
+    var h = '<div class="label">Your six-month number</div><div class="big">' + usd(m.target) + '</div><p class="dim">' + usd(m.base) + ' a month (essentials plus loan payments) times 6.</p>';
+    if(m.sv !== null){
+      var pp = Math.min(100, m.sv / m.target * 100);
+      h += '<div class="bar" role="img" aria-label="' + Math.round(pp) + ' percent saved"><i style="width:' + pp + '%"></i></div><div class="row"><span>Saved so far</span><b>' + usd(m.sv) + ' (' + Math.round(pp) + '%)</b></div>';
+    }
+    if(m.sa){
+      var rem = m.target - (m.sv || 0);
+      h += rem <= 0 ? '<p>You\'re there. Six months is covered.</p>' : '<div class="row"><span>At ' + usd(m.sa) + ' a month</span><b>' + dur(Math.ceil(rem / m.sa)) + ' to get there</b></div>';
+    }
+    return h;
+  }
+
+  /* ---------- report ---------- */
+  function moves(m){
+    var out = [];
+    if(m.real === null) out.push('Go back to step 1 and find your real number. Every other number depends on it.');
+    if(m.committed !== null && m.committed >= 100) out.push('You\'re short every month, so start with your essentials. Which ones can come down, even for a while? A subscription you can pause, a gym membership you can replace with exercising at home. If it still doesn\'t add up, use the "Lower the payment" script below and talk to your bank about spreading your payments.');
+    if(m.survival){
+      var top = m.rows[0];
+      if(top && top.apr !== null) out.push('Send every extra dollar to ' + top.name + ', your highest rate at ' + top.apr + '%. Pay the regular amount on every other loan, and take on no new debt while you do it.');
+      else out.push('List every loan with its balance and rate in step 3, circle the highest rate and send every extra dollar there. No new debt while you do it.');
+    }
+    if(m.d.payday) out.push('Before the next payday loan, check a credit union, or talk to a nonprofit credit counsellor. "Cheaper ways out" below has where to start.');
+    if(m.subs > 0) out.push('Cancel one subscription this week. Together yours cost ' + usd(m.subs * 12) + ' a year. The "Cancel without the runaround" script below has the exact words.');
+    if(m.d.card && (m.ccNever || (m.ccA && m.ccA.months > 36))) out.push('Your card payment barely moves the balance. Call and ask for a lower rate (see "Lower your card\'s interest rate" below), then add whatever extra you can.');
+    if(m.target) out.push('Your six-month number is ' + usd(m.target) + '. Start the fund, even small, as soon as Survival Debt is out of the way.');
+    out.push('Track everything for one full month. You can\'t fix what you can\'t see.');
+    return out.slice(0, 3);
+  }
+
+  function renderReport(){
+    var m = M, lede;
+    if(m.real === null){ lede = 'Some answers are missing, so parts of this report are empty. Start with step 1: every other number depends on your real number.'; }
+    else {
+      lede = 'Your real number is ' + usd(m.real) + ' a month.';
+      if(m.committed !== null) lede += ' ' + Math.round(m.committed) + '% of it is already spoken for before you touch it.';
+      if(m.survival) lede += ' You also carry Survival Debt, the one thing to break before you build anything else.';
+    }
+    $('repLede').textContent = lede;
+
+    var tile = function(k, v){ return '<div class="tile"><span class="k">' + k + '</span><span class="v">' + v + '</span></div>'; };
+    $('tiles').innerHTML =
+      tile('Your real number', m.real !== null ? usd(m.real) : 'Not yet') +
+      tile('Already spoken for', m.committed !== null ? Math.round(m.committed) + '%' : 'Not yet') +
+      tile('Survival Debt', !m.anyTick ? 'Not yet' : (m.survival ? 'Yes' : 'None')) +
+      tile('Six-month number', m.target !== null ? usd(m.target) : 'Not yet');
+
+    $('moves').innerHTML = moves(m).map(function(x){ return '<li><span>' + esc(x) + '</span></li>'; }).join('');
+
+    var card = function(title, go, inner){ return '<div class="rep"><div class="rep-head"><h4>' + title + '</h4><button class="linkbtn" type="button" data-go="' + go + '">Edit</button></div><div class="result">' + inner + '</div></div>'; };
+    var c = '';
+    c += card('Your real number', 'income', h_real(m));
+    c += card('Spoken for before you touch it', 'spoken', h_spoken(m));
+    c += card('Survival Debt', 'debt', h_survival(m));
+    if(m.d.card) c += card('Your credit card', 'debt2', h_card(m));
+    if(m.d.payday) c += card('Your payday loan', 'debt2', h_payday(m));
+    if(m.d.bnpl) c += card('Buy now, pay later', 'debt2', h_bnpl(m));
+    if(m.hasDebt) c += card('Which debt first', 'rank', h_rank(m));
+    c += card('Your six-month safety number', 'safety', h_safety(m));
+    $('repCards').innerHTML = c;
+
+    var rel = {0: m.d.payday || m.d.over, 1: m.d.card, 2: m.committed !== null && m.committed >= 75, 3: m.committed !== null && m.committed >= 100, 4: m.subs > 0};
+    var order = SCRIPTS.map(function(s, i){ return i; });
+    order.sort(function(a, b){ return (rel[b] ? 1 : 0) - (rel[a] ? 1 : 0) || a - b; });
+    $('scripts').innerHTML = order.map(function(i){
+      var s = SCRIPTS[i];
+      return '<details class="sc"><summary><span class="t">' + esc(s.t) + '</span>' + (rel[i] ? '<span class="foryou">For you</span>' : '') + '</summary>' +
+        '<div class="sc-body"><p class="when">Use it when: ' + esc(s.when) + '</p>' +
+        '<div class="say" id="say' + i + '"><span class="k">Say</span>' + esc(s.say) + '</div>' +
+        '<div class="sc-foot"><p>' + esc(s.no) + '</p><button class="btn ghost" type="button" data-copy="say' + i + '">Copy</button></div></div></details>';
+    }).join('');
+  }
+
+  /* ---------- calc ---------- */
+  function calc(){
+    M = compute();
+    $('fixedBox').hidden = M.mode !== 'fixed';
+    $('varBox').hidden = M.mode !== 'variable';
+    $('carWrap').hidden = !M.d.car;
+    $('cardCard').hidden = !M.d.card;
+    $('paydayCard').hidden = !M.d.payday;
+    $('bnplCard').hidden = !M.d.bnpl;
+    put('r1', h_real(M)); put('r2', h_spoken(M)); put('r3', h_card(M)); put('r4', h_payday(M));
+    put('r5', h_bnpl(M)); put('r6', h_survival(M)); put('r7', h_rank(M)); put('r8', h_safety(M));
+    $('autoNote').hidden = !($('ess').dataset.auto === '1' || $('lp').dataset.auto === '1');
+    $('next').disabled = ST.page === 'income' && M.real === null;
+    $('exBanner').hidden = !(ST.example && ST.page !== 'welcome');
+    if(ST.page === 'report') renderReport();
+  }
+
+  /* ---------- state: save, restore, clear ---------- */
+  function serialize(){
+    var o = {};
+    qa('#app input').forEach(function(el){
+      if(el.type === 'checkbox'){ o[el.id] = el.checked; }
+      else if(el.type === 'radio'){ if(el.checked) o['radio:' + el.name] = el.value; }
+      else { o[el.id] = el.value; }
+    });
+    o['auto:ess'] = $('ess').dataset.auto || ''; o['auto:lp'] = $('lp').dataset.auto || '';
+    return o;
+  }
+  function restore(o){
+    o = o || {};
+    qa('#app input').forEach(function(el){
+      if(el.type === 'checkbox'){ el.checked = !!o[el.id]; }
+      else if(el.type === 'radio'){ el.checked = (o['radio:' + el.name] || 'fixed') === el.value; }
+      else { el.value = o[el.id] != null ? o[el.id] : (DEFAULTS[el.id] || ''); }
+    });
+    $('ess').dataset.auto = o['auto:ess'] || ''; $('lp').dataset.auto = o['auto:lp'] || '';
+    qa('#debtRows .drow').forEach(function(r){ r.hidden = +r.getAttribute('data-row') > 3; });
+    syncRows();
+  }
+  function dirty(o){
+    return Object.keys(o || {}).some(function(k){
+      if(k.indexOf('radio:') === 0 || k.indexOf('auto:') === 0) return false;
+      var v = o[k]; return v === true || (typeof v === 'string' && v !== '' && v !== DEFAULTS[k]);
+    });
+  }
+  function save(){
+    if(ST.example) return;
+    try { localStorage.setItem(KEY, JSON.stringify({v:1, page:ST.page, fields:serialize(), t:Date.now()})); } catch(e){}
+  }
+  var saveTimer = null;
+  function scheduleSave(){ clearTimeout(saveTimer); saveTimer = setTimeout(save, 250); }
+  function load(){
+    try { var s = localStorage.getItem(KEY); if(!s) return null; var o = JSON.parse(s); return (o && o.v === 1) ? o : null; } catch(e){ return null; }
+  }
+  function wipeSaved(){ try { localStorage.removeItem(KEY); } catch(e){} }
+
+  var EX = {pay1:'3600', ap_housing:'1250', ap_bills:'420', ap_food:'700', ap_loans:'540', ap_subs:'96',
+    cc_bal:'4200', cc_apr:'24.99', cc_pay:'120', cc_extra:'50',
+    pd_amt:'300', pd_fee:'45', pd_days:'14', pd_times:'6', bn_due:'180', bn_owed:'520', car:'280',
+    dn1:'Visa', db1:'4200', da1:'24.99', dn2:'Store card', db2:'900', da2:'29.99', dn3:'Car loan', db3:'11000', da3:'6.9', dn4:'Buy now, pay later', db4:'520', da4:'0',
+    ess:'2370', lp:'540', saved:'800', setaside:'250',
+    d_card:true, d_payday:true, d_bnpl:true, d_car:true, d_other:true};
+
+  /* ---------- seeds ---------- */
+  function seedSafety(){
+    var e = (val('ap_housing') || 0) + (val('ap_bills') || 0) + (val('ap_food') || 0), l = val('ap_loans');
+    var ess = $('ess'), lp = $('lp');
+    if(e && (ess.value === '' || ess.dataset.auto === '1')){ ess.value = String(e); ess.dataset.auto = '1'; }
+    if(l !== null && (lp.value === '' || lp.dataset.auto === '1')){ lp.value = String(l); lp.dataset.auto = '1'; }
+  }
+  function seedRank(){
+    var empty = qa('#debtRows input').every(function(el){ return el.value === ''; });
+    if(!empty) return;
+    var n = 1;
+    if(chk('d_card') && val('cc_bal') !== null){
+      $('dn' + n).value = 'Credit card'; $('db' + n).value = String(val('cc_bal'));
+      if(val('cc_apr') !== null) $('da' + n).value = String(val('cc_apr'));
+      n++;
+    }
+    if(chk('d_bnpl') && val('bn_owed') !== null){
+      $('dn' + n).value = 'Buy now, pay later'; $('db' + n).value = String(val('bn_owed'));
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function skip(p){ if(p === 'debt2') return !(M.d.card || M.d.payday || M.d.bnpl); if(p === 'rank') return !M.hasDebt; return false; }
+  function step(p, dir){ var i = ORDER.indexOf(p); do { i += dir; } while(ORDER[i] && skip(ORDER[i])); return ORDER[i]; }
+
+  function renderChrome(){
+    var p = ST.page, sec = SECTION[p] || 0;
+    $('chrome').hidden = !sec;
+    $('navbar').hidden = !sec;
+    if(sec){
+      $('stepLabel').textContent = 'Step ' + sec + ' of 4 · ' + NAMES[sec - 1];
+      qa('#steps li').forEach(function(li, i){
+        var n = i + 1;
+        li.className = n < sec ? 'done' : (n === sec ? 'now' : 'todo');
+        if(n === sec) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+      });
+      var nx = step(p, 1), label = 'Continue';
+      if(nx === 'report') label = 'See my report';
+      else if(ST.editing && SECTION[nx] !== sec) label = 'Back to my report';
+      $('next').textContent = label;
+      $('back').textContent = (ST.editing && SECTION[step(p, -1)] !== sec) ? 'Cancel' : 'Back';
+    }
+  }
+
+  function go(p){
+    M = compute();
+    if(skip(p)) p = 'debt';
+    ST.page = p;
+    qa('.screen').forEach(function(s){ s.hidden = s.getAttribute('data-page') !== p; });
+    document.body.classList.toggle('is-cover', p === 'welcome');
+    if(p === 'rank') seedRank();
+    if(p === 'safety') seedSafety();
+    syncRows();
+    renderChrome();
+    calc();
+    renderChrome();
+    window.scrollTo(0, 0);
+    var h = document.querySelector('.screen[data-page="' + p + '"] [tabindex="-1"]');
+    if(h) h.focus({preventScroll:true});
+    save();
+  }
+
+  function onNext(){
+    var n = step(ST.page, 1);
+    if(ST.editing && SECTION[n] !== SECTION[ST.page]) n = 'report';
+    if(n === 'report') ST.editing = false;
+    go(n);
+  }
+  function onBack(){
+    var n = step(ST.page, -1);
+    if(ST.editing && SECTION[n] !== SECTION[ST.page]){ ST.editing = false; n = 'report'; }
+    go(n);
+  }
+
+  function enterExample(){
+    ST.backup = serialize();
+    restore(EX); $('ess').dataset.auto = ''; $('lp').dataset.auto = '';
+    ST.example = true; ST.editing = false;
+    go('report');
+  }
+  function leaveExample(){
+    var b = ST.backup;
+    ST.example = false; ST.editing = false;
+    if(b && dirty(b)){ restore(b); go(resume === 'welcome' ? 'income' : resume); }
+    else { restore({}); go('income'); }
+    ST.backup = null;
+  }
+
+  /* ---------- events ---------- */
+  function onInput(ev){
+    var t = ev.target;
+    if(t && (t.id === 'ess' || t.id === 'lp')) t.dataset.auto = '0';
+    if(t && t.id && t.id.indexOf('d_') === 0 && t.type === 'checkbox'){
+      if(t.id === 'd_none' && t.checked){ ['d_card','d_payday','d_bnpl','d_over','d_car','d_other'].forEach(function(id){ $(id).checked = false; }); }
+      else if(t.id !== 'd_none' && t.checked){ $('d_none').checked = false; }
+    }
+    calc(); scheduleSave();
+  }
+  document.addEventListener('input', onInput);
+  document.addEventListener('change', onInput);
+  $('next').addEventListener('click', onNext);
+  $('back').addEventListener('click', onBack);
+  $('addRow').addEventListener('click', function(){
+    var h = qa('#debtRows .drow[hidden]')[0];
+    if(h){ h.hidden = false; qa('input', h)[0].focus(); }
+    $('addRow').hidden = qa('#debtRows .drow[hidden]').length === 0;
+  });
+  $('start').addEventListener('click', function(){ go(hasSaved ? resume : 'income'); });
+  $('startOver').addEventListener('click', function(){ wipeSaved(); restore({}); hasSaved = false; resume = 'income'; ST.editing = false; go('income'); });
+  $('seeExample').addEventListener('click', enterExample);
+  $('useOwn').addEventListener('click', leaveExample);
+  $('editAll').addEventListener('click', function(){ ST.editing = false; go('income'); });
+
+  var armed = false, armTimer = null;
+  $('wipe').addEventListener('click', function(){
+    var b = $('wipe');
+    if(!armed){
+      armed = true; b.textContent = 'Tap again to erase my answers';
+      armTimer = setTimeout(function(){ armed = false; b.textContent = 'Clear my data'; }, 4000);
+      return;
+    }
+    clearTimeout(armTimer); armed = false; b.textContent = 'Clear my data';
+    wipeSaved(); restore({}); hasSaved = false; resume = 'income'; ST.editing = false; ST.example = false;
+    $('start').textContent = 'Start'; $('startOver').hidden = true;
+    go('welcome');
+  });
+
+  document.addEventListener('click', function(ev){
+    var g = ev.target.closest('[data-go]');
+    if(g){ ST.editing = true; go(g.getAttribute('data-go')); return; }
+    var b = ev.target.closest('[data-copy]'); if(!b) return;
+    var node = $(b.getAttribute('data-copy'));
+    var text = node.innerText.replace(/^Say\s*/, '').trim();
+    var done = function(){ var o = b.textContent; b.textContent = 'Copied'; setTimeout(function(){ b.textContent = o; }, 1600); };
+    var fallback = function(){ var r = document.createRange(); r.selectNodeContents(node); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Press copy'; setTimeout(function(){ b.textContent = 'Copy'; }, 2200); };
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch(e){ fallback(); }
+  });
+
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'hidden') save(); });
+  window.addEventListener('pagehide', save);
+
+  /* ---------- boot ---------- */
+  var saved = load();
+  restore(saved ? saved.fields : {});
+  M = compute();
+  if(saved){
+    hasSaved = saved.page !== 'welcome' || dirty(saved.fields);
+    resume = (saved.page && saved.page !== 'welcome') ? saved.page : 'income';
+    if(skip(resume)) resume = 'debt';
+  }
+  if(hasSaved){ $('start').textContent = 'Continue where I left off'; $('startOver').hidden = false; }
+  ST.page = 'welcome';
+  document.body.classList.add('is-cover');
+  calc();
+})();
+</script>
+</body>
+</html>
